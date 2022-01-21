@@ -13,10 +13,12 @@ const TodoComp = () => {
   const [finishedTodo, setFinishedTodo] = useState([]);
 
   const addTodo = () => {
-    todoList.push(newTodo);
-    setTodoList([...todoList]);
-    Keyboard.dismiss();
-    setNewTodo("");
+    if (newTodo.length > 0) {
+      todoList.push(newTodo);
+      setTodoList([...todoList]);
+      Keyboard.dismiss();
+      setNewTodo("");
+    }
   };
 
   const deleteTodo = (index) => {
@@ -32,21 +34,31 @@ const TodoComp = () => {
 
   const saveTodo = (index) => {
     setIsEdited(false);
+    setIsEdited(false);
     todoList.splice(index, 1, editingTodo);
     setTodoList([...todoList]);
   };
 
   const completedTodo = (index) => {
     setCheckedIndex(index);
-    setIsChecked(!isChecked);
+    setIsChecked(true);
     finishedTodo.push(todoList[index]);
     todoList.splice(index, 1);
-  };
-  const addAgain=(value)=>{
-    todoList.push(value)
     setTodoList([...todoList]);
-    
-  }
+    setIsChecked(false);
+  };
+
+  const addAgain = (value, index) => {
+    todoList.push(value);
+    setTodoList([...todoList]);
+    finishedTodo.splice(index, 1);
+    setFinishedTodo([...finishedTodo]);
+  };
+
+  const deleteCompleted = (index) => {
+    finishedTodo.splice(index, 1);
+    setFinishedTodo([...finishedTodo]);
+  };
   return (
     <View style={styles.todoContainer}>
       <Text style={styles.heading}>ADD ITEMS</Text>
@@ -67,7 +79,7 @@ const TodoComp = () => {
       <View>
         {todoList.length > 0 && (
           <View>
-            <Text style={styles.heading}>Todo List</Text>
+            <Text style={styles.heading}>Todo Lists</Text>
             <View style={styles.horizontalLine}></View>
           </View>
         )}
@@ -75,11 +87,14 @@ const TodoComp = () => {
           todoList.map((value, index) => {
             return (
               <View key={index + 1} style={styles.todoList}>
-                <View style={{ width: "65%" }}>
+                <View style={{ width: "70%" }}>
                   {isEdited && editingIndex === index ? (
                     <View style={styles.textInputContainer}>
                       <TextInput
-                        style={styles.textInput}
+                        style={[
+                          styles.textInput,
+                          { marginLeft: 11, width: "92%" },
+                        ]}
                         placeholder="enter"
                         value={editingTodo}
                         onChangeText={(text) => setEditingTodo(text)}
@@ -118,7 +133,7 @@ const TodoComp = () => {
           <View></View>
         )}
       </View>
-      {/*************************************finished */}
+      {/*************************************finished*********************************/}
       {finishedTodo.length > 0 && (
         <View>
           <Text style={styles.heading}>Completed</Text>
@@ -129,9 +144,25 @@ const TodoComp = () => {
         <View>
           {finishedTodo.map((value, index) => {
             return (
-              <View key={index}>
-                <Text>{value}</Text>
-                <Button title='todo' onPress={()=>addAgain(value)}/>
+              <View key={index} style={styles.todoList}>
+                <View style={{ width: "70%",opacity:0.5 }}>
+                  <CheckBox
+                    style={[styles.textInput, { marginLeft: 11, width: "92%" }]}
+                    title={value}
+                    checked={true}
+                    checkedColor="green"
+                    
+                  />
+                </View>
+                <View style={{ marginRight: 10 }}>
+                  <Button title="todo" onPress={() => addAgain(value, index)} />
+                </View>
+                <View style={{ marginRight: 10 }}>
+                  <Button
+                    title="delete"
+                    onPress={() => deleteCompleted(index)}
+                  />
+                </View>
               </View>
             );
           })}
@@ -165,9 +196,13 @@ const styles = StyleSheet.create({
   textInput: {
     width: "80%",
     borderWidth: 1,
+    borderColor: "gray",
+    backgroundColor: "white",
     marginRight: 10,
     borderRadius: 5,
     padding: 5,
+    color: "black",
+    fontWeight: "bold",
   },
   button: {
     width: "17%",

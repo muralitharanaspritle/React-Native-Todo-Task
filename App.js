@@ -7,14 +7,14 @@ export default function App() {
     <View style={styles.container}>
       {/* <StatusBar style="auto" animated={true} /> */}
       <TodoComp/>
-    </View>
+    </View> 
   );
 }
 
 const styles = StyleSheet.create({ 
   container: {
     flex: 1,
-    backgroundColor: "white",
-    marginTop:50
+    backgroundColor: "yellow",
+    paddingTop:50
   },
 });
