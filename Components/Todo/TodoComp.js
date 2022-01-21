@@ -7,7 +7,7 @@ import {
   Dimensions,
   Alert,
   TouchableOpacity,
-  ToastAndroid
+  ToastAndroid,
 } from "react-native";
 import { CheckBox, Button } from "react-native-elements";
 import React, { useState } from "react";
@@ -29,7 +29,7 @@ const TodoComp = (props) => {
       todoList.push(newTodo);
       setTodoList([...todoList]);
       Keyboard.dismiss();
-      ToastAndroid.show(`${newTodo} added Succesfully`,ToastAndroid.SHORT)
+      ToastAndroid.show(`${newTodo} added Succesfully`, ToastAndroid.SHORT);
       setNewTodo("");
     } else {
       Alert.alert("Task", "Please enter a task!");
@@ -41,10 +41,10 @@ const TodoComp = (props) => {
       {
         text: "Yes",
         onPress: () => {
+          setIsEdited(false);
           todoList.splice(index, 1);
           setTodoList([...todoList]);
-          
-        },   
+        },
       },
       {
         text: "No",
@@ -60,7 +60,6 @@ const TodoComp = (props) => {
   };
 
   const saveTodo = (index) => {
-    setIsEdited(false);
     setIsEdited(false);
     todoList.splice(index, 1, editingTodo);
     setTodoList([...todoList]);
@@ -97,7 +96,7 @@ const TodoComp = (props) => {
           value={newTodo}
           placeholder="Enter your tasks"
         />
-        <View >
+        <View>
           <TouchableOpacity onPress={addTodo}>
             <Text style={styles.button}>
               <Icon name="plus" size={30} color={props.myPrimaryColor} />
@@ -118,7 +117,12 @@ const TodoComp = (props) => {
           todoList.map((value, index) => {
             return (
               <View key={index + 1} style={styles.todoList}>
-                <View style={{ width: "70%",marginLeft: width - (width * 97) / 100, }}>
+                <View
+                  style={{
+                    width: "70%",
+                    marginLeft: width - (width * 97) / 100,
+                  }}
+                >
                   {isEdited && editingIndex === index ? (
                     <View style={styles.textInputContainer}>
                       <TextInput
@@ -177,6 +181,7 @@ const TodoComp = (props) => {
         )}
       </View>
       {/*************************************Completed*********************************/}
+          
       {finishedTodo.length > 0 && (
         <View>
           <Text style={styles.heading}>Completed</Text>
@@ -257,11 +262,11 @@ const styles = StyleSheet.create({
   },
   button: {
     marginRight: 10,
-    padding:5,
-    borderRadius:5,
-    width:50,
-    textAlign:"center",
-    backgroundColor:"white"
+    padding: 5,
+    borderRadius: 5,
+    width: 50,
+    textAlign: "center",
+    backgroundColor: "white",
   },
   todoList: {
     display: "flex",
@@ -270,8 +275,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  completedTodo: { marginLeft:10,width: width - (width * 33) / 100, opacity: 0.4 },
+  completedTodo: {
+    marginLeft: 10,
+    width: width - (width * 33) / 100,
+    opacity: 0.4,
+  },
   strickOut: { textDecorationLine: "line-through" },
 });
+
+
 
 //dimension library

@@ -19,13 +19,12 @@ export default function App() {
           <View style={styles.appHeading}>
             <Text style={styles.appHeadingText}>TodoList</Text>
           </View>
-          <TodoComp myPrimaryColor = {"#7E16BA"} />
+          <TodoComp myPrimaryColor={"#7E16BA"} />
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
