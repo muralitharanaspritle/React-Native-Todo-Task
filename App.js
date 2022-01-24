@@ -6,10 +6,11 @@ import {
   View,
   TouchableWithoutFeedback,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import TodoComp from "./Components/Todo/TodoComp";
 
-const myConatinerColor = "#D29FF0";
+const myConatinerColor = "white";
 const myAppHeaderColor = "#7E16BA";
 export default function App() {
   return (
@@ -19,7 +20,9 @@ export default function App() {
           <View style={styles.appHeading}>
             <Text style={styles.appHeadingText}>TodoList</Text>
           </View>
-          <TodoComp myPrimaryColor={"#7E16BA"} />
+          <ScrollView>
+            <TodoComp myPrimaryColor={"#7E16BA"} />
+          </ScrollView>
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>

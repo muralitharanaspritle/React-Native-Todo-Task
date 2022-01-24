@@ -86,144 +86,150 @@ const TodoComp = (props) => {
     setFinishedTodo([...finishedTodo]);
   };
   return (
-    <View style={styles.todoContainer}>
-      <Text style={styles.heading}>ADD ITEMS</Text>
-      <View style={styles.horizontalLine}></View>
-      <View style={styles.textInputContainer}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => setNewTodo(text)}
-          value={newTodo}
-          placeholder="Enter your tasks"
-        />
-        <View>
-          <TouchableOpacity onPress={addTodo}>
-            <Text style={styles.button}>
-              <Icon name="plus" size={30} color={props.myPrimaryColor} />
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/**************************Todo list****************************** */}
-      <View>
-        {todoList.length > 0 && (
+    <>
+      <View style={styles.todoContainer}>
+        <Text style={styles.heading}>ADD ITEMS</Text>
+        <View style={styles.horizontalLine}></View>
+        <View style={styles.textInputContainer}>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => setNewTodo(text)}
+            value={newTodo}
+            placeholder="Enter your tasks"
+          />
           <View>
-            <Text style={styles.heading}>Todo Lists</Text>
+            <TouchableOpacity onPress={addTodo}>
+              <Text style={styles.button}>
+                <Icon name="plus" size={30} color={props.myPrimaryColor} />
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        {/**************************Todo list****************************** */}
+        <View>
+          {todoList.length > 0 && (
+            <View>
+              <Text style={styles.heading}>Todo Lists</Text>
+              <View style={styles.horizontalLine}></View>
+            </View>
+          )}
+          {todoList.length > 0 ? (
+            todoList.map((value, index) => {
+              return (
+                <View key={index + 1} style={styles.todoList}>
+                  <View
+                    style={{
+                      width: "70%",
+                      marginLeft: width - (width * 97) / 100,
+                    }}
+                  >
+                    {isEdited && editingIndex === index ? (
+                      <View style={styles.textInputContainer}>
+                        <TextInput
+                          style={[
+                            styles.textInput,
+                            { marginLeft: 10, width: "92%" },
+                          ]}
+                          placeholder="Enter"
+                          value={editingTodo}
+                          onChangeText={(text) => setEditingTodo(text)}
+                        />
+                      </View>
+                    ) : isChecked && checkedIndex === index ? (
+                      <CheckBox
+                        title={value}
+                        checked={isChecked}
+                        // onPress={() => completedTodo(index)}
+                        onIconPress={() => completedTodo(index)}
+                        checkedColor="green"
+                      />
+                    ) : (
+                      <CheckBox
+                        title={value}
+                        checked={false}
+                        // onPress={() => completedTodo(index)}
+                        onIconPress={() => completedTodo(index)}
+                        checkedColor="green"
+                      />
+                    )}
+                  </View>
+                  <View style={{ marginRight: 10 }}>
+                    {isEdited && editingIndex === index ? (
+                      <TouchableOpacity onPress={() => saveTodo(index)}>
+                        <Text style={styles.button}>
+                          <Icon name="check" size={30} color="green" />
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity onPress={() => editTodo(index)}>
+                        <Text style={styles.button}>
+                          <Icon name="edit" size={30} color="purple" />
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  <View style={{ marginRight: 10 }}>
+                    <TouchableOpacity onPress={() => deleteTodo(index)}>
+                      <Text style={styles.button}>
+                        <Icon name="close" size={30} color="red" />
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              );
+            })
+          ) : (
+            <View></View>
+          )}
+        </View>
+        {/*************************************Completed*********************************/}
+
+        {finishedTodo.length > 0 && (
+          <View>
+            <Text style={styles.heading}>Completed</Text>
             <View style={styles.horizontalLine}></View>
           </View>
         )}
-        {todoList.length > 0 ? (
-          todoList.map((value, index) => {
-            return (
-              <View key={index + 1} style={styles.todoList}>
-                <View
-                  style={{
-                    width: "70%",
-                    marginLeft: width - (width * 97) / 100,
-                  }}
-                >
-                  {isEdited && editingIndex === index ? (
-                    <View style={styles.textInputContainer}>
-                      <TextInput
-                        style={[
-                          styles.textInput,
-                          { marginLeft: 10, width: "92%" },
-                        ]}
-                        placeholder="Enter"
-                        value={editingTodo}
-                        onChangeText={(text) => setEditingTodo(text)}
-                      />
-                    </View>
-                  ) : isChecked && checkedIndex === index ? (
+        {finishedTodo.length > 0 ? (
+          <View>
+            {finishedTodo.map((value, index) => {
+              return (
+                <View key={index} style={styles.todoList}>
+                  <View style={styles.completedTodo}>
                     <CheckBox
-                      title={value}
-                      checked={isChecked}
-                      onPress={() => completedTodo(index)}
+                      containerStyle=""
+                      style={[
+                        styles.textInput,
+                        { marginLeft: 11, width: "92%" },
+                      ]}
+                      title={<Text style={styles.strickOut}>{value}</Text>}
+                      checked={true}
                       checkedColor="green"
                     />
-                  ) : (
-                    <CheckBox
-                      title={value}
-                      checked={false}
-                      onPress={() => completedTodo(index)}
-                      checkedColor="green"
-                    />
-                  )}
-                </View>
-                <View style={{ marginRight: 10 }}>
-                  {isEdited && editingIndex === index ? (
-                    <TouchableOpacity onPress={() => saveTodo(index)}>
+                  </View>
+                  <View style={{ marginRight: 10 }}>
+                    <TouchableOpacity onPress={() => addAgain(value, index)}>
                       <Text style={styles.button}>
-                        <Icon name="check" size={30} color="green" />
+                        <Icon name="undo" size={30} color="black" />
                       </Text>
                     </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={() => editTodo(index)}>
+                  </View>
+                  <View style={{ marginRight: 10 }}>
+                    <TouchableOpacity onPress={() => deleteCompleted(index)}>
                       <Text style={styles.button}>
-                        <Icon name="edit" size={30} color="purple" />
+                        <Icon name="close" size={30} color="red" />
                       </Text>
                     </TouchableOpacity>
-                  )}
+                  </View>
                 </View>
-                <View style={{ marginRight: 10 }}>
-                  <TouchableOpacity onPress={() => deleteTodo(index)}>
-                    <Text style={styles.button}>
-                      <Icon name="close" size={30} color="red" />
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            );
-          })
+              );
+            })}
+          </View>
         ) : (
           <View></View>
         )}
       </View>
-      {/*************************************Completed*********************************/}
-          
-      {finishedTodo.length > 0 && (
-        <View>
-          <Text style={styles.heading}>Completed</Text>
-          <View style={styles.horizontalLine}></View>
-        </View>
-      )}
-      {finishedTodo.length > 0 ? (
-        <View>
-          {finishedTodo.map((value, index) => {
-            return (
-              <View key={index} style={styles.todoList}>
-                <View style={styles.completedTodo}>
-                  <CheckBox
-                    containerStyle=""
-                    style={[styles.textInput, { marginLeft: 11, width: "92%" }]}
-                    title={<Text style={styles.strickOut}>{value}</Text>}
-                    checked={true}
-                    checkedColor="green"
-                  />
-                </View>
-                <View style={{ marginRight: 10 }}>
-                  <TouchableOpacity onPress={() => addAgain(value, index)}>
-                    <Text style={styles.button}>
-                      <Icon name="undo" size={30} color="black" />
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ marginRight: 10 }}>
-                  <TouchableOpacity onPress={() => deleteCompleted(index)}>
-                    <Text style={styles.button}>
-                      <Icon name="close" size={30} color="red" />
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            );
-          })}
-        </View>
-      ) : (
-        <View></View>
-      )}
-    </View>
+    </>
   );
 };
 
@@ -234,6 +240,7 @@ const myMarginBottom = height - (height * (100 - 2)) / 100;
 const styles = StyleSheet.create({
   todoContainer: {
     padding: 10,
+    paddingBottom: 30,
   },
   heading: {
     fontSize: 20,
@@ -282,7 +289,5 @@ const styles = StyleSheet.create({
   },
   strickOut: { textDecorationLine: "line-through" },
 });
-
-
 
 //dimension library
